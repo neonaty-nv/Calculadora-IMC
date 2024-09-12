@@ -1,5 +1,8 @@
 package cl.bootcamp.individual9.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,6 +27,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import cl.bootcamp.individual9.ui.theme.Montserrat
 
@@ -122,21 +128,43 @@ fun MultiButtonSegmented() {
     }
 }
 
+//@Composable
+//fun CalculateButton(onClick: () -> Unit) {
+//    Button(
+//        onClick = onClick,
+//        modifier = Modifier.fillMaxWidth(),
+//        shape = RoundedCornerShape(4.dp),
+//        colors = ButtonDefaults.buttonColors(
+//            containerColor = Color(0xFF0ED6B8)
+//        )
+//
+//    ) {
+//        Text("Calcular",
+//            fontSize = 18.sp,
+//            fontFamily = Montserrat)
+//    }
+//}
+
 @Composable
 fun CalculateButton(onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(4.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF16A3CE)
-        )
+    val gradientBrush = Brush.horizontalGradient(
+        colors = listOf(Color(0xFF16A3CE), Color(0xFF0ED6B8))
+    )
 
-
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(4.dp))
+            .background(gradientBrush)
+            .clickable(onClick = onClick)
+            .padding(12.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Text("Calcular",
+        Text(
+            "Calcular",
             fontSize = 18.sp,
-            fontFamily = Montserrat)
-
+            fontFamily = Montserrat,
+            color = Color.White
+        )
     }
 }
