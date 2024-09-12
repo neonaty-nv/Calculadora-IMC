@@ -2,9 +2,11 @@ package cl.bootcamp.individual9.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import cl.bootcamp.individual9.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
@@ -31,4 +33,8 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+val Montserrat = FontFamily(
+    Font(R.font.montserrat_medium, FontWeight.Medium)
 )
