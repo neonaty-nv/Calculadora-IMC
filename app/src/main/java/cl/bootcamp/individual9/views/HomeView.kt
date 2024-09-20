@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import cl.bootcamp.individual9.components.CalculateButton
 import cl.bootcamp.individual9.components.MultiButtonSegmented
 import cl.bootcamp.individual9.components.OutlinedText
+import cl.bootcamp.individual9.components.Result
 import cl.bootcamp.individual9.components.Space
 import cl.bootcamp.individual9.components.Texto
 
@@ -52,8 +53,13 @@ fun ContentHomeView(){
         Space()
 
         CalculateButton {
-
         }
+
+        Space()
+
+        Result("Resultado")
+
+
 
     }
 }

@@ -170,7 +170,7 @@ fun CalculateButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun IMCResultText(result: String) {
+fun Result(result: String) {
     Text(
         text = result,
         fontSize = 25.sp,
