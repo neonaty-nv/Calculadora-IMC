@@ -1,5 +1,6 @@
 package cl.bootcamp.individual9.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,12 +15,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -30,7 +28,11 @@ import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import cl.bootcamp.individual9.R
 import cl.bootcamp.individual9.ui.theme.Montserrat
 
 
@@ -45,20 +47,45 @@ fun Texto(texto: String) {
         modifier = Modifier
             .padding(horizontal = 30.dp)
             .fillMaxWidth()
-
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OutlinedText(label: String) {
-    OutlinedTextField(
-        value = "",
-        onValueChange = {},
-        label = { Text(label) },
-        modifier = Modifier.fillMaxWidth()
+fun Avatar(selectedOption: String) {
+    val avatarImage = if (selectedOption == "Hombre") {
+        R.drawable.man_avatar
+    } else {
+        R.drawable.woman_avatar
+    }
+
+    Image(
+        painter = painterResource(id = avatarImage),
+        contentDescription = null,
+        modifier = Modifier.fillMaxWidth().height(150.dp)
     )
 }
+
+
+@Composable
+fun MainOutlinedText(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String
+){
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(text = label) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        modifier = Modifier
+            .fillMaxWidth(),
+        textStyle = TextStyle(
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center
+        )
+    )
+}
+
 
 @Composable
 fun Space(){
@@ -66,67 +93,42 @@ fun Space(){
 }
 
 @Composable
-fun MultiButtonSegmented() {
-    var selectedOption by remember { mutableStateOf("Hombre") }
+fun MultiButtonSegmented(selectedOption: String, onOptionSelected: (String) -> Unit) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        val options = listOf("Hombre", "Mujer")
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-
-        Button(
-            onClick = { selectedOption = "Hombre" },
-            modifier = Modifier
-                .weight(1f),
-            shape = RoundedCornerShape(4.dp),
-            colors = if (selectedOption == "Hombre") {
-                ButtonDefaults.buttonColors(containerColor = Color(0xFF16A3CE))
-            } else {
-                ButtonDefaults.buttonColors(containerColor = Color(0xFFE0E0E0))
-            }
-        ) {
-            if (selectedOption == "Hombre") {
-                Icon(
-                    imageVector = Icons.Filled.Check,
-                    contentDescription = "Selected",
-                    tint = Color.White,
-                    modifier = Modifier.padding(end = 4.dp)
+        options.forEach { option ->
+            Button(
+                onClick = { onOptionSelected(option) },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(4.dp),
+                colors = if (selectedOption == option) {
+                    ButtonDefaults.buttonColors(containerColor = Color(0xFF16A3CE))
+                } else {
+                    ButtonDefaults.buttonColors(containerColor = Color(0xFFE0E0E0))
+                }
+            ) {
+                if (selectedOption == option) {
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = "Selected",
+                        tint = Color.White,
+                        modifier = Modifier.padding(end = 4.dp)
+                    )
+                }
+                Text(
+                    text = option,
+                    color = if (selectedOption == option) Color.White else Color.Black
                 )
             }
-            Text(
-                text = "Hombre",
-                color = if (selectedOption == "Hombre") Color.White else Color.Black
-            )
-        }
 
-        Spacer(modifier = Modifier.width(10.dp))
-
-        Button(
-            onClick = { selectedOption = "Mujer" },
-            modifier = Modifier
-                .weight(1f),
-            shape = RoundedCornerShape(4.dp),
-            colors = if (selectedOption == "Mujer") {
-                ButtonDefaults.buttonColors(containerColor = Color(0xFF16A3CE))
-            } else {
-                ButtonDefaults.buttonColors(containerColor = Color(0xFFE0E0E0))
+            if (option != options.last()) {
+                Spacer(modifier = Modifier.width(10.dp))
             }
-        ) {
-            if (selectedOption == "Mujer") {
-                Icon(
-                    imageVector = Icons.Filled.Check,
-                    contentDescription = "Selected",
-                    tint = Color.White,
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-            }
-            Text(
-                text = "Mujer",
-                color = if (selectedOption == "Mujer") Color.White else Color.Black
-            )
         }
     }
 }
+
 
 //@Composable
 //fun CalculateButton(onClick: () -> Unit) {
@@ -146,7 +148,7 @@ fun MultiButtonSegmented() {
 //}
 
 @Composable
-fun CalculateButton(onClick: () -> Unit) {
+fun CalculateButton(onClick: () -> Unit, buttonText: String) {
     val gradientBrush = Brush.horizontalGradient(
         colors = listOf(Color(0xFF16A3CE), Color(0xFF0ED6B8))
     )
@@ -161,7 +163,7 @@ fun CalculateButton(onClick: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            "Calcular",
+            text = buttonText, // Ahora el texto es dinámico
             fontSize = 18.sp,
             fontFamily = Montserrat,
             color = Color.White
@@ -170,14 +172,11 @@ fun CalculateButton(onClick: () -> Unit) {
 }
 
 @Composable
-fun Result(result: String) {
+fun Result(imc: Double) {
     Text(
-        text = result,
-        fontSize = 25.sp,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .padding(vertical = 16.dp)
-            .fillMaxWidth()
+        text = "IMC: $imc",
+        fontFamily = Montserrat,
+        fontSize = 40.sp,
+        textAlign = TextAlign.Center
     )
 }

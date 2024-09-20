@@ -10,9 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cl.bootcamp.individual9.components.Avatar
 import cl.bootcamp.individual9.components.CalculateButton
+import cl.bootcamp.individual9.components.MainOutlinedText
 import cl.bootcamp.individual9.components.MultiButtonSegmented
-import cl.bootcamp.individual9.components.OutlinedText
 import cl.bootcamp.individual9.components.Result
 import cl.bootcamp.individual9.components.Space
 import cl.bootcamp.individual9.components.Texto
@@ -26,15 +27,20 @@ fun HomeView() {
     }
 }
 
-
 @Composable
 fun ContentHomeView(){
+
+    var selectedOption by remember { mutableStateOf("Hombre") }  // Estado manejado aquí
+    var age by remember { mutableStateOf("") }
+    var weight by remember { mutableStateOf("") }
+    var height by remember { mutableStateOf("") }
+    var imcResult by remember { mutableDoubleStateOf(0.0) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF7F9FC))
             .padding(30.dp),
-        verticalArrangement =Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
@@ -42,25 +48,40 @@ fun ContentHomeView(){
 
         Space()
 
-        MultiButtonSegmented()
+        Avatar(selectedOption)
 
         Space()
 
-        OutlinedText(label = "Edad")
-        OutlinedText(label = "Peso (kg)")
-        OutlinedText(label = "Altura (cm)")
+        MultiButtonSegmented(selectedOption = selectedOption,
+            onOptionSelected = { option -> selectedOption = option
+        })
+        Space()
+
+        MainOutlinedText(value = age, onValueChange = { age = it }, label = "Edad")
+        MainOutlinedText(value = weight, onValueChange = { weight = it }, label = "Peso")
+        MainOutlinedText(value = height, onValueChange = { height = it }, label = "Altura")
 
         Space()
 
-        CalculateButton {
-        }
+        CalculateButton(
+            onClick = {
+                val weightValue = weight.toDoubleOrNull() ?: 0.0
+                val heightValue = (height.toDoubleOrNull() ?: 0.0) / 100
+                if (weightValue > 0 && heightValue > 0) {
+                    imcResult = calculateIMC(weightValue, heightValue)
+                }
+            },
+            buttonText = "Calcular" // Puedes cambiar este texto
+        )
 
         Space()
 
-        Result("Resultado")
-
-
+        Result(imcResult)
 
     }
+}
+
+fun calculateIMC(weight: Double, height: Double): Double {
+    return kotlin.math.round(weight / (height * height) * 10) / 10
 }
 
