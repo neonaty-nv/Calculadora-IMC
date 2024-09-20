@@ -36,8 +36,6 @@ fun ContentHomeView(){
         verticalArrangement =Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
 
-
-
     ) {
         Texto("Calculadora de IMC")
 

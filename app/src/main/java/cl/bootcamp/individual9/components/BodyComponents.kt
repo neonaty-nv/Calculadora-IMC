@@ -168,3 +168,16 @@ fun CalculateButton(onClick: () -> Unit) {
         )
     }
 }
+
+@Composable
+fun IMCResultText(result: String) {
+    Text(
+        text = result,
+        fontSize = 25.sp,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .padding(vertical = 16.dp)
+            .fillMaxWidth()
+    )
+}
