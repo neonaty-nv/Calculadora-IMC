@@ -71,7 +71,7 @@ fun ContentHomeView(){
                     imcResult = calculateIMC(weightValue, heightValue)
                 }
             },
-            buttonText = "Calcular" // Puedes cambiar este texto
+            buttonText = "Calcular"
         )
 
         Space()
