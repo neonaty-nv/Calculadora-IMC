@@ -30,7 +30,7 @@ fun HomeView() {
 @Composable
 fun ContentHomeView(){
 
-    var selectedOption by remember { mutableStateOf("Hombre") }  // Estado manejado aquí
+    var selectedOption by remember { mutableStateOf("Hombre") }
     var age by remember { mutableStateOf("") }
     var weight by remember { mutableStateOf("") }
     var height by remember { mutableStateOf("") }
