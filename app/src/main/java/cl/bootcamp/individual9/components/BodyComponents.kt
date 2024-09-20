@@ -163,7 +163,7 @@ fun CalculateButton(onClick: () -> Unit, buttonText: String) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = buttonText, // Ahora el texto es dinámico
+            text = buttonText,
             fontSize = 18.sp,
             fontFamily = Montserrat,
             color = Color.White
