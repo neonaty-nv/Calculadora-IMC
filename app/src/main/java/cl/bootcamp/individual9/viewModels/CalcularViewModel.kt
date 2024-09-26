@@ -31,8 +31,16 @@ class CalcularViewModel : ViewModel() {
             val imc = weight / (heightInM * heightInM)
             state = state.copy(imcResult = imc)
         } else {
-            state = state.copy(imcResult = null)
+            state = state.copy(
+                modal = true
+            )
         }
+    }
+
+    fun cancelModal() {
+        state = state.copy(
+            modal = false
+        )
     }
 }
 

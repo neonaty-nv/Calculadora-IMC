@@ -163,3 +163,34 @@ fun Result(imc: String) {
         textAlign = TextAlign.Center
     )
 }
+
+@Composable
+fun Alert(
+    title: String,
+    message: String,
+    confirmText: String,
+    onConfirmClick: () -> Unit,
+    onDismissClick: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismissClick,
+        title = { Text(
+            text = title,
+            fontFamily = Montserrat,
+            fontWeight = FontWeight.Bold,
+            ) },
+        text = { Text(text = message, fontSize = 18.sp,
+        ) },
+        confirmButton = {
+            Button(
+                onClick = onConfirmClick,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF16A3CE))
+        ) {
+                Text(text = confirmText)
+            }
+        }
+
+
+    )
+}

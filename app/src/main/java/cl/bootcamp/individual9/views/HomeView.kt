@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import cl.bootcamp.individual9.components.Alert
 import cl.bootcamp.individual9.components.Avatar
 import cl.bootcamp.individual9.components.CalculateButton
 import cl.bootcamp.individual9.components.MainOutlinedText
@@ -73,17 +74,24 @@ fun ContentHomeView(paddingValues: PaddingValues, viewModel: CalcularViewModel){
 
         CalculateButton(
             onClick = {
-                if (state.weight.isNotEmpty() && state.height.isNotEmpty()) {
-                    viewModel.calculateIMC()
-                }
+                viewModel.calculateIMC()
             },
             buttonText = "Calcular"
         )
 
         Space()
 
-        Result(state.imcResult?.let { String.format("%.1f", it) } ?: "N/A")
+        Result(state.imcResult?.let { String.format("%.1f", it) } ?: "0.0")
 
+        if (state.modal) {
+            Alert(
+                title = "¡Alerta!",
+                message = "Completa todos los campos requeridos",
+                confirmText = "Aceptar",
+                onConfirmClick = { viewModel.cancelModal() },
+                onDismissClick = { viewModel.cancelModal() }
+            )
+        }
 
     }
 }
