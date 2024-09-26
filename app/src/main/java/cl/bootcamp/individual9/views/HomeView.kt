@@ -8,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cl.bootcamp.individual9.components.Avatar
 import cl.bootcamp.individual9.components.CalculateButton
@@ -17,58 +16,65 @@ import cl.bootcamp.individual9.components.MultiButtonSegmented
 import cl.bootcamp.individual9.components.Result
 import cl.bootcamp.individual9.components.Space
 import cl.bootcamp.individual9.components.Texto
+import cl.bootcamp.individual9.viewModels.CalcularViewModel
 
-@Preview(showBackground = true)
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView() {
+fun HomeView(modifier: Modifier, viewModel: CalcularViewModel) {
     Scaffold {
-        ContentHomeView()
+        ContentHomeView(it, viewModel)
     }
 }
 
 @Composable
-fun ContentHomeView(){
-
-    var selectedOption by remember { mutableStateOf("Hombre") }
-    var age by remember { mutableStateOf("") }
-    var weight by remember { mutableStateOf("") }
-    var height by remember { mutableStateOf("") }
-    var imcResult by remember { mutableDoubleStateOf(0.0) }
+fun ContentHomeView(paddingValues: PaddingValues, viewModel: CalcularViewModel){
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF7F9FC))
+            .padding(paddingValues)
             .padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
+
+        val state = viewModel.state
+
         Texto("Calculadora de IMC")
 
         Space()
 
-        Avatar(selectedOption)
+        Avatar(selectedOption = state.selectedOption)
 
         Space()
 
-        MultiButtonSegmented(selectedOption = selectedOption,
-            onOptionSelected = { option -> selectedOption = option
-        })
+        MultiButtonSegmented(
+            selectedOption = state.selectedOption,
+            onOptionSelected = { option ->
+                viewModel.onOptionSelected(option)
+            }
+        )
+
         Space()
 
-        MainOutlinedText(value = age, onValueChange = { age = it }, label = "Edad")
-        MainOutlinedText(value = weight, onValueChange = { weight = it }, label = "Peso")
-        MainOutlinedText(value = height, onValueChange = { height = it }, label = "Altura")
+        MainOutlinedText(
+            value = state.weight,
+            onValueChange = { viewModel.onValue(it, "weight")},
+            label = "Peso"
+        )
+        MainOutlinedText(
+            value = state.height,
+            onValueChange = { viewModel.onValue(it, "height")},
+            label = "Altura"
+        )
 
         Space()
 
         CalculateButton(
             onClick = {
-                val weightValue = weight.toDoubleOrNull() ?: 0.0
-                val heightValue = (height.toDoubleOrNull() ?: 0.0) / 100
-                if (weightValue > 0 && heightValue > 0) {
-                    imcResult = calculateIMC(weightValue, heightValue)
+                if (state.weight.isNotEmpty() && state.height.isNotEmpty()) {
+                    viewModel.calculateIMC()
                 }
             },
             buttonText = "Calcular"
@@ -76,12 +82,10 @@ fun ContentHomeView(){
 
         Space()
 
-        Result(imcResult)
+        Result(state.imcResult?.let { String.format("%.1f", it) } ?: "N/A")
+
 
     }
 }
 
-fun calculateIMC(weight: Double, height: Double): Double {
-    return kotlin.math.round(weight / (height * height) * 10) / 10
-}
 

@@ -130,23 +130,6 @@ fun MultiButtonSegmented(selectedOption: String, onOptionSelected: (String) -> U
 }
 
 
-//@Composable
-//fun CalculateButton(onClick: () -> Unit) {
-//    Button(
-//        onClick = onClick,
-//        modifier = Modifier.fillMaxWidth(),
-//        shape = RoundedCornerShape(4.dp),
-//        colors = ButtonDefaults.buttonColors(
-//            containerColor = Color(0xFF0ED6B8)
-//        )
-//
-//    ) {
-//        Text("Calcular",
-//            fontSize = 18.sp,
-//            fontFamily = Montserrat)
-//    }
-//}
-
 @Composable
 fun CalculateButton(onClick: () -> Unit, buttonText: String) {
     val gradientBrush = Brush.horizontalGradient(
@@ -172,7 +155,7 @@ fun CalculateButton(onClick: () -> Unit, buttonText: String) {
 }
 
 @Composable
-fun Result(imc: Double) {
+fun Result(imc: String) {
     Text(
         text = "IMC: $imc",
         fontFamily = Montserrat,
